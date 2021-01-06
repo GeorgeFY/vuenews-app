@@ -1,0 +1,8 @@
+[vue-router] Named Route 'layout' has a default child route. 
+When navigating to this named route (:to="{name: 'layout'"), the default child route will not be rendered.
+Remove the name from this route and use the name of the default child route for named links instead.
+
+在路由配置中layout路由，给了一个name: 'layout',
+这会导致在浏览器地址栏输入layout后没有对应的页面显示
+因为pathwei path: '/',
+所以应该把name去掉  什么都不输入的时候直接显示home页面

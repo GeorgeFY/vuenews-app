@@ -133,6 +133,7 @@ export default request
 	头部样式在多个页面都会用到，直接把样式写到index.less中，取名app-nav-bar，在用到这个样式的时候，给类名它
 	Button里面放字体图标icon-prefix 
 	如果修改样式后不生效，可能是选择类名后级别不够可以在样式后面加  !important
+	另外一种方法，全局样式覆盖vant的样式，可以在main.js中最后倒入全局样式，让vant样式在前面，全局样式在后面
 	
 登入页面 功能基本实现
 	给登录按钮注册点击事件。
