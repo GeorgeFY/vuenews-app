@@ -26,12 +26,13 @@
       </van-field>
     </van-cell-group>
     <div class="login-btn-wrap">
-      <van-button class="login-btn" type="info" block>登入</van-button>
+      <van-button class="login-btn" type="info" block @click="onLogin">登入</van-button>
     </div>
   </div>
 </template>
 
 <script>
+import { login } from '@/api/user'
 export default {
   name: 'LoginIndex',
   data () {
@@ -40,6 +41,23 @@ export default {
         mobile: '',
         code: ''
       }
+    }
+  },
+  methods: {
+    async onLogin () {
+      // 1:找到数据接口(接口文档)
+      // 2:封装请求方法
+      // 3:请求调用登入
+      try {
+        const res = await login(this.user)
+        console.log('登入成功', res)
+      } catch (err) {
+        // TODO handle the exception
+        if (err.response.status === 400) {
+          console.log('登入失败', err)
+        }
+      }
+      // 4:处理响应结果
     }
   }
 }
