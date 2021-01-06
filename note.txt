@@ -1,0 +1,36 @@
+vue create yfnews-m 创建项目
+选择项目需要的条件
+github创建空仓库
+本地git init
+把.ssh文件放在项目根目录下面（方便HBuild X 提交代码）
+在.gitignore中添加.ssh
+git add .
+git commit -m "first commit"
+git remote add origin git@github.com:GeorgeFY/yfnews-m.git
+git push -u origin master
+把项目提交到github的远程仓库
+
+项目导入到HBuild X
+新建 note.txt文件
+测试HBuild X提交代码
+
+创建分支，后续代码提交到分支 不随便改动分支
+git checkout -b dev
+git push -u origin dev 代码push到开发分支
+
+调试初始化目录结构
+1：删除初始化的默认文件
+2：新增调整我们需要的目录结构
+api目录 utils目录 styles目录
+在styles目录新建index.less文件 作为全局样式
+需要在main.js中引入import './styles/index.less'
+
+
+导入Vant组件库
+cnpm i vant@next -S
+
+import Vue from 'vue';
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
+Vue.use(Vant);
