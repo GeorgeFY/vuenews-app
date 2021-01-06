@@ -116,3 +116,7 @@ views下面新建login文件夹，下面新建index.vue
       }
     ]
 	默认子路由不给路径，让开始就指向这个页面
+	
+封装请求模块
+utils文件夹下面新建request.json
+ 引入axios,新建axios.导出request
