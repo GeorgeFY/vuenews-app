@@ -26,11 +26,93 @@ api目录 utils目录 styles目录
 需要在main.js中引入import './styles/index.less'
 
 
+
+导入vant库之前先需要确认vue版本是（vue版本和vue/cli版本有区别）
+vue版本 可以在package.json中查看 或者cnpm list vue中查看
+vue/cli版本 可以用vue -V查看
+因为我们使用的vue版本是vue@2.6.12  所以
+# Vue 2 项目，安装 Vant 2.x 版本：
+npm i vant -S
+
+为了后续方便，没有使用按需导入，是直接全部导入进来 在main.js中，这样以后可以直接使用vant所有组件
 导入Vant组件库
-cnpm i vant@next -S
+cnpm i vant -S
 
 import Vue from 'vue';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
 Vue.use(Vant);
+
+
+rem适配
+vant推荐两个插件  postcss-pxtorem       lib-flexible
+具体参考vant官方文档 进阶使用中rem适配
+package.json文件里面browserslist和postcss.config.js里面的
+autoprefixer: {
+      browsers: ['Android >= 4.0', 'iOS >= 8']
+    }
+冲突，导致编译启动项目爆警告。
+解决办法，把package.json文件里面browserslist注释掉
+只考虑移动端Android >= 4.0', 'iOS >= 8'
+在postcss.config.js文件里面去掉autoprefixer: {
+      browsers: ['Android >= 4.0', 'iOS >= 8']
+    }
+	
+字体图标导入
+在iconfont里面新建项目后，把svg图片导入。
+Font class里面在线预览，生成代码。负载代码在styles文件夹下新建icon.less文件
+把生成的代码放在里面。然后把icon.less在index.less里面导入让全局可用  @import "./icon.less";
+
+
+配置路由页面
+1：登入页面
+views下面新建login文件夹，下面新建index.vue
+基本格式，name为LoginIndex
+路由懒加载
+ {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login')
+  }
+  
+2：配置底部导航栏页面
+	1：先views下面新建layout文件夹，里面放index.vue作为底部导航栏页面。
+		里面放van-tabbar 以及需要子路由出口
+		才有vant格式 路由模式van-tabbar标签后面跟router
+		子元素用to属性来去匹配页面路径
+		参照vant官方文档，active双向绑定。实现点击切换颜色
+	2：在router文件夹下面的index.js里面配置路由。采用路由懒加载方式
+	{
+    path: '/',
+    name: 'layout',
+    component: () => import('@/views/layout/'),
+	}
+3：子路由页面新建与配置
+	根据layout里面tabbar选项来新建相应的子页面（home,qa,video,my）
+	全部都是在views文件夹下面新建对应文件夹，里面新建Index.vue文件
+	
+	创建好后，配置二级路由（layout）
+	children: [
+      {
+        path: '', // 默认子路由
+        name: 'home',
+        component: () => import('@/views/home/')
+      },
+      {
+        path: '/qa',
+        name: 'qa',
+        component: () => import('@/views/qa/')
+      },
+      {
+        path: '/video',
+        name: 'video',
+        component: () => import('@/views/video/')
+      },
+      {
+        path: '/my',
+        name: 'my',
+        component: () => import('@/views/my/')
+      }
+    ]
+	默认子路由不给路径，让开始就指向这个页面

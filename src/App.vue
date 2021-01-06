@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>袁方NEWS</h1>
     <router-view/>
   </div>
 </template>
