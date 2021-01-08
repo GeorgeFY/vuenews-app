@@ -283,3 +283,16 @@ async onSengSms () {
 	对象不能直接存在本地存储，需要JSON.stringify转成字符串在存储
 	
 	1：封装本地存储（setItem,getItem,removeItem）
+	2:vueX 状态管理登入的用户
+	导入setItem,getItem import { getItem, setItem } from '@/utils/storage'
+	为了区别，方便阅读，设置const常量USER_KEY
+	state里面先在本地存储里面读取到数据
+	mutations里面设置state的值，用到函数setUser
+	setUser (state, data) {
+      state.user = data
+    }
+	在登入成功时候，使用commit调用setUser来修改state的值
+	// 将后端返回的用户登录状态（token等数据）放到 Vuex 容器中
+    this.$store.commit('setUser', data.data)
+	
+	设置成功后，放在页面刷新数据丢失，把数据存储在本地存储setItem(USER_KEY, state.user)

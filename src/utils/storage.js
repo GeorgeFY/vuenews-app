@@ -24,7 +24,7 @@ export const setItem = (name, value) => {
   if (typeof value === 'object') {
     value = JSON.stringify(value)
   }
-  window.localStorage.getItem(name, value)
+  window.localStorage.setItem(name, value)
 }
 
 // 移除本地存储数据

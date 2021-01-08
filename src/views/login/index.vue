@@ -54,8 +54,8 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
+        mobile: '17090086870',
+        code: '246810'
       },
       formRules: {
         mobile: [
@@ -82,9 +82,12 @@ export default {
       // 2:封装请求方法
       // 3:请求调用登入
       try {
-        const res = await login(this.user)
-        console.log('登入成功', res)
+        const { data } = await login(this.user)
+
         Toast.success('登入成功')
+
+        // 将后端返回的用户登录状态（token等数据）放到 Vuex 容器中
+        this.$store.commit('setUser', data.data)
       } catch (err) {
         // TODO handle the exception
         if (err.response.status === 400) {
