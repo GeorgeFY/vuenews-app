@@ -15,3 +15,14 @@ export const login = data => {
     data
   })
 }
+
+/*
+  短信验证码发送
+*/
+
+export const sendSms = mobile => {
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/sms/codes/${mobile}`
+  })
+}

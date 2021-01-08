@@ -200,3 +200,80 @@ duration: 0  参数为0表示一直不消失
       }
     }
 	
+验证码点击实现倒计时功能
+	校验手机号码	验证通过-》发送请求-》用户接受验证码-》请求登入
+	请求发送验证码-》隐藏发送按钮，显示倒计时按钮
+	倒计时结束，隐藏倒计时，显示发送按钮
+	
+	验证表单（vaildate）支持name来验证表单，返回一个promise对象，直接使用async await
+	点击发送验证码时候click加一个prevent阻止默认验证事件
+		prevent为vue中事件修饰符
+	通过 ref 可以获取到 Form 实例并调用实例方法
+	在from中ref="login-from"
+	async onSengSms () {
+      try {
+        await this.$refs['login-from'].validate('mobile')
+      } catch (err) {
+        // TODO handle the exception
+        Toast({
+          message: err.message,
+          position: 'top'
+        })
+      }
+    }
+	
+短信发送请求
+export const sendSms = mobile => {
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/sms/codes/${mobile}`
+  })
+}  
+es6拼接
+eg:
+http://ttapi.research.itcast.cn/app/v1_0/sms/codes/18271671850
+{
+    "message": "OK",
+    "data": {
+        "mobile": "18271671850"
+    }
+}
+
+发送短信代码
+const res = await sendSms(this.user.mobile)
+因为所有err都会到catch中，为了不同错分别提升
+需要判断错误是手机号错误，还是验证码发送太频繁，或者未知错误
+
+async onSengSms () {
+      try {
+        await this.$refs['login-from'].validate('mobile')
+        const res = await sendSms(this.user.mobile)
+        console.log(res)
+      } catch (err) {
+        // TODO handle the exception
+        let message = ''
+        if (err && err.response && err.response.status === 429) {
+          message = '发送太频繁,请稍后在发送'
+        } else if (err.name === 'mobile') {
+          message = err.message
+        } else {
+          // 未知错误
+          message = '发送失败!请重试'
+        }
+        Toast({
+          message,
+          position: 'top'
+        })
+      }
+    }
+	
+	倒计时
+	<van-count-down v-if="isCountDownShow"
+        :time="1000 * 6"
+        format="ss s"
+        @finish="isCountDownShow = false"/>
+		组件  v-if v-else显示   finish事件倒计时结束触发
+		
+		
+	发送请求时候，需要页面按钮禁用，不要重复触发事件发请求
+	增加loading,默认为false,点击发送验证码按钮后为true，请求结束该为false.不管请求是否成功

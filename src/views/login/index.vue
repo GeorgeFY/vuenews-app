@@ -10,12 +10,14 @@
     :validate-first="true"
     :show-error="false"
     :show-error-message="false"
+    ref="login-from"
     @failed="onFailed">
       <van-field
         v-model="user.mobile"
         icon-prefix="toutiao"
         left-icon="shouji"
-        name="手机号"
+        name="mobile"
+        center
         placeholder="请输入手机号"
         :rules="formRules.mobile"
       />
@@ -24,12 +26,17 @@
         clearable
         icon-prefix="toutiao"
         left-icon="yanzhengma"
-        name="验证码"
+        name="code"
+        center
         placeholder="请输入验证码"
         :rules="formRules.code"
       >
       <template #button>
-          <van-button size="mini" class="sent-btn" round>发送验证码</van-button>
+        <van-count-down v-if="isCountDownShow"
+        :time="1000 * 6"
+        format="ss s"
+        @finish="isCountDownShow = false"/>
+        <van-button v-else size="mini" class="sent-btn" round @click.prevent="onSengSms" :loading="isSendSmsLoading">发送验证码</van-button>
       </template>
       </van-field>
       <div class="login-btn-wrap">
@@ -40,7 +47,7 @@
 </template>
 
 <script>
-import { login } from '@/api/user'
+import { login, sendSms } from '@/api/user'
 import { Toast } from 'vant'
 export default {
   name: 'LoginIndex',
@@ -59,7 +66,9 @@ export default {
           { required: true, message: '请填写验证码' },
           { pattern: /^\d{6}$/, message: '验证码错误' }
         ]
-      }
+      },
+      isCountDownShow: false,
+      isSendSmsLoading: false // 发送验证码按钮的 loading 状态
     }
   },
   methods: {
@@ -92,6 +101,32 @@ export default {
           position: 'top'
         })
       }
+    },
+    async onSengSms () {
+      try {
+        await this.$refs['login-from'].validate('mobile')
+        this.isSendSmsLoading = true // 展示按钮的 loading 状态，防止网络慢用户多次点击触发发送行为
+        const res = await sendSms(this.user.mobile)
+        this.isCountDownShow = true
+        console.log(res)
+      } catch (err) {
+        // TODO handle the exception
+        let message = ''
+        if (err && err.response && err.response.status === 429) {
+          message = '发送太频繁,请稍后在发送'
+        } else if (err.name === 'mobile') {
+          message = err.message
+        } else {
+          // 未知错误
+          message = '发送失败!请重试'
+        }
+        Toast({
+          message,
+          position: 'top'
+        })
+      }
+      // 无论发送验证码成功还是失败，最后都要关闭发送按钮的 loading 状态
+      this.isSendSmsLoading = false
     }
   }
 }
