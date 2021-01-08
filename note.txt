@@ -277,3 +277,9 @@ async onSengSms () {
 		
 	发送请求时候，需要页面按钮禁用，不要重复触发事件发请求
 	增加loading,默认为false,点击发送验证码按钮后为true，请求结束该为false.不管请求是否成功
+	
+	
+	本地存储的数据不是响应式的，用户存储 Token  Vuex容器（获取方便，响应式）
+	对象不能直接存在本地存储，需要JSON.stringify转成字符串在存储
+	
+	1：封装本地存储（setItem,getItem,removeItem）
