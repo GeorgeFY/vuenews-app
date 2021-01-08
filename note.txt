@@ -177,3 +177,26 @@ async onLogin () {
 }
 表单中数据双向绑定v-model this.user可以获取到数据，作为参数传递到登入请求中
 使用async await  promise的语法糖处理，省去回调函数
+
+登入提示效果（Toast）
+需要单独加载import { Toast } from 'vant'
+duration: 0  参数为0表示一直不消失
+如果不import Toast  可以使用this.$toast
+
+表单提交效果实现
+使用 Field 的 rules 属性定义校验规则。
+最好不要写在模板中，在data中定义一个属性formRules
+	1：发送验证码，登入都是button点击都会导致submit提交  怎么处理
+	2：提示消息都是标红在input下面输出  如何改为toast
+	
+	form表单 show-error show-error-message都设置为false，增加failed事件，van-field添加name属性
+	在failed事件中输出错误信息，并且把它位置放在上面
+	onFailed (error) {
+      if (error.errors[0]) {
+        Toast({
+          message: error.errors[0].message,
+          position: 'top'
+        })
+      }
+    }
+	
