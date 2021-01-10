@@ -339,4 +339,17 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		
 	3：通过拦截器来请求。这样做后不需要在请求中添加headers了。
 		axios的拦截器方法interceptors（github中查找）
+		axios.interceptors.request.use(function (config) {
+			// Do something before request is sent
+			return config;
+		  }, function (error) {
+			// Do something with request error
+			return Promise.reject(error);
+		  });
+		  
+		  本项目中因为axios是const request = axios.create的。所以使用拦截器时候需要使用request
 	
+	
+首页
+	1：顶栏实现
+	全局样式 app-nav-bar需要修改下不然不能把button放上去
