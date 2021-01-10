@@ -383,3 +383,17 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 			bottom:50px;
 			overflow-y:auto;
 		}
+		
+		文章列表数据获取，api里面封装请求（新建article.js）
+		export const getArticles = (params) => {
+		  return request({
+			method: 'GET',
+			url: '/app/v1_1/articles',
+			params
+		  })
+		}
+		params参数，分别为频道id  时间戳（注意，Date.now()或者this.timestamp）
+		获取文章信息
+		1. 请求获取数据 2. 把数据放到 list 数组中 3. 设置本次加载状态结束，它才可以判断是否需要加载下一次，否则就会永远的停在这里
+		4. 判断数据是否全部加载完成，没有加载完成，则设置timestamp
+		
