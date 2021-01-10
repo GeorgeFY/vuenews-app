@@ -312,4 +312,16 @@ async onSengSms () {
 	
 	样式设置
 	登入或者没有登入显示不一样的页面。v-if  v-else判断
+	把vuex里面的数据通过mapState映射到页面中使用
+	import { mapState } from 'vuex'
+	computed: {
+    ...mapState(['user'])
+  }
+  这样就可以在页面中使用user来获取到状态管理里面的数据
+	在未登入页面，给手机图片的div给点击事件。点击跳转到login页面
+	@click=$router.push('/login')
+
+	登入界面，登入成功后，返回到之前页面。直接用this.$router.back()跳转
+	
+	2：实现退出功能
 	

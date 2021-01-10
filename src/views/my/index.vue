@@ -74,6 +74,7 @@
     <van-cell title="消息通知" is-link to="/" />
     <van-cell class="mb-4" title="小智同学" is-link to="/" />
     <van-cell
+    @click="onLogout"
      v-if="user"
      class="logout-cell"
      title="退出登入"
@@ -87,6 +88,22 @@ export default {
   name: 'MyIndex',
   computed: {
     ...mapState(['user'])
+  },
+  methods: {
+    onLogout () {
+      // 退出登入，把vuex里面的states中user设置为null（dailog）
+      this.$dialog.confirm({
+        title: '退出提示',
+        message: '确认退出吗？'
+      })
+        .then(() => {
+          // on confirm
+          this.$store.commit('setUser', null)
+        })
+        .catch(() => {
+          // on cancel
+        })
+    }
   }
 }
 </script>
