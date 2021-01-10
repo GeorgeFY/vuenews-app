@@ -353,3 +353,22 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 首页
 	1：顶栏实现
 	全局样式 app-nav-bar需要修改下不然不能把button放上去
+	
+	2：文章频道列表 van-tabs
+		通过 v-model:active 绑定当前激活标签对应的索引值，默认情况下启用第一个标签。
+		
+		展示频道列表，active里面加载函数。请求数据 在api里面封装获取频道列表函数
+		
+	3：文章列表封装
+		每一个频道都对应一个文章列表，不可能对每一个频道都写一个请求。所以需要搞一个文章列表组件
+		让组件里面带参数，把文字频道的id等信息传进去。props
+		props: {
+			channel: {
+			type: Object,
+			required: true
+			}
+		}
+		vant  的tab有一个功能就是，没有点击的组件先不展示，只有点击后才会展示
+		
+		在home文件夹下面新建一个components文件夹，里面新建article-list.vue
+		把这个组件在，home中引入，注册，使用

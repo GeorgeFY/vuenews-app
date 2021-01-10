@@ -12,22 +12,46 @@
       >搜索</van-button>
     </van-nav-bar>
     <!-- /导航栏 -->
+    <!-- 文章列表 开始-->
+    <van-tabs v-model="active">
+      <van-tab :title="channel.name"
+      v-for="channel in channels"
+      :key="channel.id"
+      >
+        <article-list :channel='channel'></article-list>
+      </van-tab>
+    </van-tabs>
+    <!-- 文章列表 结束-->
   </div>
 </template>
 
 <script>
+import { getUserChannels } from '@/api/user'
+import ArticleList from './components/article-list'
 export default {
   name: 'HomeIndex',
-  components: {},
+  components: {
+    ArticleList
+  },
   props: {},
   data () {
-    return {}
+    return {
+      active: 0,
+      channels: []
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.loadChannels()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    async loadChannels () {
+      const { data } = await getUserChannels()
+      this.channels = data.data.channels
+    }
+  }
 }
 </script>
 
