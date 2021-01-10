@@ -296,3 +296,20 @@ async onSengSms () {
     this.$store.commit('setUser', data.data)
 	
 	设置成功后，放在页面刷新数据丢失，把数据存储在本地存储setItem(USER_KEY, state.user)
+	
+	
+我的模块
+	1：页面布局，配合蓝湖
+	van-cell-group单元格布局(van-cell-group)
+	van-cell插槽自定义布局，van-image  ,div ,van-button分别放左边图片，昵称，右侧按钮  
+	
+	Grid 宫格布局放数据信息（van-grid）
+	van-grid-item一样使用插槽放内容（van-grid-item）
+	div为solt里面放数量和名字
+	
+	收藏，历史使用Grid 宫格布局（设置:column-num="2"，一列放2个）
+	van-cell设置页面导航<van-cell title="路由跳转" is-link to="index" />
+	
+	样式设置
+	登入或者没有登入显示不一样的页面。v-if  v-else判断
+	
