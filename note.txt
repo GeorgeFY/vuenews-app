@@ -374,3 +374,12 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		把这个组件在，home中引入，注册，使用
 		
 		vant  list组件引入,查看官方文档使用  
+		修改list样式，让在页面中间滚动
+		.article-list{
+			position:fixed;
+			left:0;
+			right:0;
+			top:90px;
+			bottom:50px;
+			overflow-y:auto;
+		}

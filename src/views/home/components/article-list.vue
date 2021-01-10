@@ -1,5 +1,5 @@
 <template>
-  <div class="artile-list">
+  <div class="article-list">
     <van-list
       v-model="loading"
       :finished="finished"
@@ -55,4 +55,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.article-list{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 90px;
+  bottom: 50px;
+  overflow-y: auto;
+}
 </style>
