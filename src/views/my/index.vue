@@ -9,9 +9,9 @@
           slot="icon"
           round
           fit="cover"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="currentUser.photo"
         />
-        <div class="name" slot="title">昵称</div>
+        <div class="name" slot="title">{{currentUser.name}}</div>
         <van-button
           class="update-btn"
           size="small"
@@ -23,25 +23,25 @@
       <van-grid class="data-info" :border="false">
         <van-grid-item class="data-info-item">
           <div solt='text' class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{currentUser.art_count}}</div>
             <div class="text">头条</div>
           </div>
         </van-grid-item>
         <van-grid-item class="data-info-item">
           <div solt='text' class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{currentUser.follow_count}}</div>
             <div class="text">关注</div>
           </div>
         </van-grid-item>
         <van-grid-item class="data-info-item">
           <div solt='text' class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{currentUser.fans_count}}</div>
             <div class="text">粉丝</div>
           </div>
         </van-grid-item>
         <van-grid-item class="data-info-item">
           <div solt='text' class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{currentUser.like_count > 0 ? currentUser.like_count : 0}}</div>
             <div class="text">获赞</div>
           </div>
         </van-grid-item>
@@ -84,12 +84,26 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getUserInfo } from '@/api/user'
 export default {
   name: 'MyIndex',
+  data () {
+    return {
+      currentUser: {}
+    }
+  },
+  created () {
+    this.loadCurrentUser()
+  },
   computed: {
     ...mapState(['user'])
   },
   methods: {
+    async loadCurrentUser () {
+      const { data } = await getUserInfo()
+      this.currentUser = data.data
+      console.log(this.currentUser)
+    },
     onLogout () {
       // 退出登入，把vuex里面的states中user设置为null（dailog）
       this.$dialog.confirm({

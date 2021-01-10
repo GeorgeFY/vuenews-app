@@ -3,7 +3,7 @@
 */
 
 import request from '@/utils/request'
-
+import store from '@/store/'
 /*
   登入注册
 */
@@ -24,5 +24,20 @@ export const sendSms = mobile => {
   return request({
     method: 'GET',
     url: `/app/v1_0/sms/codes/${mobile}`
+  })
+}
+
+/*
+  获取当前登入用户的信息
+*/
+
+export const getUserInfo = mobile => {
+  return request({
+    method: 'GET',
+    url: '/app/v1_0/user',
+    // 增加请求头
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`
+    }
   })
 }

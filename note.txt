@@ -324,4 +324,16 @@ async onSengSms () {
 	登入界面，登入成功后，返回到之前页面。直接用this.$router.back()跳转
 	
 	2：实现退出功能
+	使用vant组件dailog
+	
+	
+显示当前登入用户信息
+http://ttapi.research.itcast.cn/app/v1_0/user
+获取用户自己信息
+	1：封装请求方法getUserInfo 
+		需要加header，里面放Authorization
+		把store引入到api的user.js中。通过store.state.user.token获取到
+		然后用es6字符串拼接
+	2：create中调用loadCurrentUser,在 method中实现
+		ayncs  await  把结果赋值给data中的currentUser，在页面渲染。判断数据是否合理
 	
