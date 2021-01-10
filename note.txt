@@ -397,3 +397,7 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		1. 请求获取数据 2. 把数据放到 list 数组中 3. 设置本次加载状态结束，它才可以判断是否需要加载下一次，否则就会永远的停在这里
 		4. 判断数据是否全部加载完成，没有加载完成，则设置timestamp
 		
+		下拉刷新,vant组件success-duration，success-text，@refresh="onRefresh" v-model="isRefreshLoading"
+		在下拉后，会默认把v-model="isRefreshLoading"里面值改为ture
+		所以在下拉获取数据后，需要手动关闭刷新状态
+		

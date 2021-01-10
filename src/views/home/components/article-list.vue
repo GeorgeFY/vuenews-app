@@ -1,13 +1,18 @@
 <template>
   <div class="article-list">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <van-cell v-for="(article,index) in articles" :key="index" :title="article.title" />
-    </van-list>
+    <van-pull-refresh v-model="isRefreshLoading"
+     :success-duration="1000"
+     :success-text="refreshSuccessText"
+     @refresh="onRefresh">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <van-cell v-for="(article,index) in articles" :key="index" :title="article.title" />
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -27,7 +32,9 @@ export default {
       articles: [],
       loading: false,
       finished: false,
-      timestamp: null // 获取下一页数据的时间戳
+      timestamp: null, // 获取下一页数据的时间戳
+      isRefreshLoading: false,
+      refreshSuccessText: '' // 下拉刷新成功的提示文本
     }
   },
   computed: {},
@@ -54,6 +61,20 @@ export default {
       } else {
         this.finished = true
       }
+    },
+    async onRefresh () {
+      // 1. 请求获取数据
+      const { data } = await getArticles({
+        channel_id: this.channel.id, // 频道 ID
+        timestamp: Date.now(),
+        with_top: 1
+      })
+      // 2. 把数据放到 list 数组中，最上面
+      const { results } = data.data
+      this.articles = [...results, ...this.articles]
+      // 3. 关闭刷新的状态 loading
+      this.isRefreshLoading = false
+      this.refreshSuccessText = `更新了${results.length}条数据`
     }
   }
 }
