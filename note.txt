@@ -336,4 +336,7 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		然后用es6字符串拼接
 	2：create中调用loadCurrentUser,在 method中实现
 		ayncs  await  把结果赋值给data中的currentUser，在页面渲染。判断数据是否合理
+		
+	3：通过拦截器来请求。这样做后不需要在请求中添加headers了。
+		axios的拦截器方法interceptors（github中查找）
 	
