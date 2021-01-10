@@ -372,3 +372,5 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		
 		在home文件夹下面新建一个components文件夹，里面新建article-list.vue
 		把这个组件在，home中引入，注册，使用
+		
+		vant  list组件引入,查看官方文档使用  
