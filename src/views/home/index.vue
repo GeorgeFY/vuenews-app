@@ -20,6 +20,18 @@
       >
         <article-list :channel='channel'></article-list>
       </van-tab>
+      <!-- 占位 开始-->
+      <div slot="nav-right"
+      class="wap-nav-placeholder"
+      >
+      </div>
+      <!-- 占位 结束-->
+      <div slot="nav-right"
+      class="wap-nav-wrap"
+      @click="isChannelEditShow = true"
+      >
+        <van-icon name="wap-nav" />
+      </div>
     </van-tabs>
     <!-- 文章列表 结束-->
     <van-popup
@@ -92,6 +104,34 @@ export default {
       height: 3px;
       background: #3296FA;
       bottom: 20px;
+    }
+  }
+  .wap-nav-placeholder{
+    width: 33px;
+    flex-shrink: 0;
+  }
+  .wap-nav-wrap{
+    position: fixed;
+    right: 0;
+    height: 43px;
+    width: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    opacity: .9;
+    .van-icon{
+      font-size: 24px;
+    }
+    &:before{
+      content: '';
+      width: 1px;
+      height: 43px;
+      background: url(line.png) no-repeat;
+      background-size: contain;
+      position: absolute;
+      left: 0;
+      top: 0;
     }
   }
 }

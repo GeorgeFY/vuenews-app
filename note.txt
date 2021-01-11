@@ -416,3 +416,8 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 	1：弹出层实现（Popub组件）
 		挂载在body上面，样式设置在home-container上无效。要么设置全局，要么行内样式
 		v-model绑定是否显示 closeable关闭按钮
+	2：汉堡按钮实现
+		在van-tabs后面放一个图标，通过点击显示弹出层
+		使用插槽放一个按钮在最后面，绝对定位放在最右边。
+		在最后面放一个一样大的空间，里面为空。占位置 设置样式时候直接给宽度无效，因为父容器flex布局
+		已经把整个区域分割完了  用flex-shrink=0
