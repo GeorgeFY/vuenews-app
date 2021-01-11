@@ -359,7 +359,7 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		
 		展示频道列表，active里面加载函数。请求数据 在api里面封装获取频道列表函数
 		
-	3：文章列表封装
+	3：文章列表封装 van-list
 		每一个频道都对应一个文章列表，不可能对每一个频道都写一个请求。所以需要搞一个文章列表组件
 		让组件里面带参数，把文字频道的id等信息传进去。props
 		props: {
@@ -401,3 +401,10 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		在下拉后，会默认把v-model="isRefreshLoading"里面值改为ture
 		所以在下拉获取数据后，需要手动关闭刷新状态
 		
+		封装文章列表项组件
+			创建 src/components/article-item/index.vue 组件
+			样式布局van-cell  插槽使用，需要判断是一张封面图还是三张封面图
+			在文章列表组建中使用文章列表项组件，把article作为参数传递。在子组件总props拿到
+			
+		处理图片渲染403错误，referrer。在public的html中添加<meta name="referrer" content="no-referrer" />
+		不发送referrer,让后端服务器以为是自己人发送请求
