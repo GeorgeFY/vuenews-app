@@ -8,12 +8,14 @@
       round
       size="mini"
       class="edit-btn"
-      >编辑</van-button>
+      @click="isEdit = !isEdit"
+      >{{isEdit ? '完成' : '编辑'}}</van-button>
     </van-cell>
     <!-- gutter设置间距-->
-    <van-grid :gutter="10">
+    <van-grid :gutter="6">
       <van-grid-item
         class='grid-item'
+        :icon="isEdit ? 'clear' : ''"
         v-for="(channel,index) in userChannels"
         :key="index"
         :text="channel.name"
@@ -28,6 +30,7 @@
         v-for="(channel,index) in recommendChannels"
         :key="index"
         :text="channel.name"
+        @click="onAdd(channel)"
       ></van-grid-item>
     </van-grid>
   </div>
@@ -46,7 +49,8 @@ export default {
   },
   data () {
     return {
-      allChannels: []
+      allChannels: [],
+      isEdit: false // 控制编辑删除图标是否显示
     }
   },
   computed: {
@@ -79,6 +83,9 @@ export default {
       // 获取所以频道
       const { data } = await getAllChannels()
       this.allChannels = data.data.channels
+    },
+    onAdd (channel) {
+      this.userChannels.push(channel)
     }
   }
 }
@@ -106,6 +113,14 @@ export default {
     /deep/.van-grid-item__text{
       font-size: 14px;
       color: #222222;
+      margin-top: 0; /* 解决点击编辑后，文字往下压的bug */
+    }
+    /deep/ .van-grid-item__icon{
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      font-size: 20px;
+      color: #ccc;
     }
   }
 }

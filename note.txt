@@ -426,3 +426,40 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		我的频道和，首页的频道是一样的，可以通过props传值获取
 		遍历props里面的值
 		展示推荐频道  用所有的频道减去我的频道获取
+		在计算属性里面获取值，遍历计算属性
+		  computed: {
+    // 推荐频道
+    recommendChannels () {
+		  const arr = []
+		  for (let i = 0; i < this.allChannels.length; i++) {
+			for (let j = 1; j < this.userChannels.length; j++) {
+			  var flag = false
+			  if (this.allChannels[i].id === this.userChannels[j].id) {
+				flag = true
+				break
+			  }
+			}
+			if (!flag) {
+			  arr.push(this.allChannels[i])
+			}
+		  }
+		  console.log(arr, '123')
+		  return arr
+		}
+	  }
+	  
+	   <van-grid :gutter="6">
+		  <van-grid-item
+			class='grid-item'
+			v-for="(channel,index) in recommendChannels"
+			:key="index"
+			:text="channel.name"
+		  ></van-grid-item>
+		</van-grid>
+		
+	添加频道
+	给所有推荐频道增加点击事件，点击后增加到我的频道
+	因为是计算属性计算的值，所以值改变会导致重新计算
+	
+	编辑频道，点击后出现删除图标
+	bool值来控制删除图标是否显示  点击后，文字会往下压。把margin-top设置为0
