@@ -102,6 +102,10 @@ export default {
       }
     },
     deleteChannel (index) {
+      // 如果删除的是激活之前的频道
+      if (index <= this.active) {
+        this.$emit('update-active', this.active - 1)
+      }
       this.userChannels.splice(index, 1)
     },
     switchChannel (index) {
