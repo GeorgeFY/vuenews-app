@@ -56,6 +56,9 @@
 import { getUserChannels } from '@/api/user'
 import ArticleList from './components/article-list'
 import ChannelEdit from './components/channel-edit'
+import { mapState } from 'vuex'
+import { getItem } from '@/utils/storage'
+import { Toast } from 'vant'
 export default {
   name: 'HomeIndex',
   components: {
@@ -70,7 +73,9 @@ export default {
       isChannelEditShow: true
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user'])
+  },
   watch: {},
   created () {
     this.loadChannels()
@@ -78,8 +83,37 @@ export default {
   mounted () {},
   methods: {
     async loadChannels () {
-      const { data } = await getUserChannels()
-      this.channels = data.data.channels
+      try {
+        let channels = []
+        if (this.user) {
+          console.log('用户登入')
+          const { data } = await getUserChannels()
+          // console.log(data)
+          channels = data.data.channels
+        } else {
+          // 未登入
+          // console.log('用户未登入')
+          const localChannels = getItem('user-channels')
+          if (localChannels) {
+            // 有本地频道数据，则使用
+            // console.log('本地存储里面有数据')
+            channels = localChannels
+            // console.log(channels, '本地存储里面有数据')
+          } else {
+            // 没有本地频道数据，则请求获取默认推荐的频道列表
+            // console.log('本地存储里面没有有数据')
+            const { data } = await getUserChannels()
+            channels = data.data.channels
+            // console.log(channels, '本地存储里面没有数据')
+          }
+        }
+        // 将数据放到组件中
+        this.channels = channels
+      } catch (e) {
+        // TODO handle the exception
+        console.log(e)
+        Toast.fail('数据获取失败')
+      }
     },
     onUpdatActive (index) {
       this.active = index

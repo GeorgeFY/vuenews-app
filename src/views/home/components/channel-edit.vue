@@ -20,7 +20,7 @@
         v-for="(channel,index) in userChannels"
         :key="index"
         :text="channel.name"
-        @click="onUserChannelClick(index)"
+        @click="onUserChannelClick(channel, index)"
       ></van-grid-item>
     </van-grid>
     <van-cell :border="false">
@@ -35,11 +35,15 @@
         @click="onAdd(channel)"
       ></van-grid-item>
     </van-grid>
+    <!-- <van-button @click="test">asdasd</van-button> -->
   </div>
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, addUserChannel, deleteUserChannel } from '@/api/channel'
+import { mapState } from 'vuex'
+import { setItem } from '@/utils/storage'
+// import { getUserChannels } from '@/api/user'
 export default {
   name: 'ChannelEdit',
   components: {},
@@ -60,6 +64,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['user']),
     // 推荐频道
     recommendChannels () {
       const arr = []
@@ -89,29 +94,50 @@ export default {
       const { data } = await getAllChannels()
       this.allChannels = data.data.channels
     },
-    onAdd (channel) {
+    async onAdd (channel) {
       this.userChannels.push(channel)
+      // 数据持久化
+      if (this.user) {
+        await addUserChannel({
+          channels: [
+            { id: channel.id, seq: this.userChannels.length }
+          ]
+        })
+      } else {
+        setItem('user-channels', this.userChannels)
+      }
     },
-    onUserChannelClick (index) {
+    onUserChannelClick (channel, index) {
       if (this.isEdit && index !== 0) {
         // 编辑状态，删除频道
-        this.deleteChannel(index)
+        this.deleteChannel(channel, index)
       } else {
         // 非编辑状态，切换频道
         this.switchChannel(index)
       }
     },
-    deleteChannel (index) {
+    async deleteChannel (channel, index) {
       // 如果删除的是激活之前的频道
       if (index <= this.active) {
         this.$emit('update-active', this.active - 1)
       }
       this.userChannels.splice(index, 1)
+      // 数据持久化
+      if (this.user) {
+        await deleteUserChannel(channel.id)
+      } else {
+        setItem('user-channels', this.userChannels)
+      }
     },
     switchChannel (index) {
       this.$emit('update-active', index)
       this.$emit('close')
     }
+    /*  测试是否添加成功到后端服务器
+    async test () {
+      const { data } = await getUserChannels()
+      console.log(data.data.channels)
+    } */
   }
 }
 </script>
