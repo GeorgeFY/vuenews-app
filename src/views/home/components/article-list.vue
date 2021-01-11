@@ -10,12 +10,9 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <van-cell
-          v-for="(article,index) in articles"
-          :key="index"
-        >
-          <article-item :article="article"></article-item>
-        </van-cell>
+        <article-item :article="article"
+        v-for="(article,index) in articles"
+        :key="index"></article-item>
       </van-list>
     </van-pull-refresh>
   </div>

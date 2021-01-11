@@ -408,3 +408,6 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 			
 		处理图片渲染403错误，referrer。在public的html中添加<meta name="referrer" content="no-referrer" />
 		不发送referrer,让后端服务器以为是自己人发送请求
+		
+		home页面tabbar样式调整
+			加边框，修改active后颜色位置  /deep/
