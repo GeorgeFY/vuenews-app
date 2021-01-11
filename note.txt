@@ -411,3 +411,8 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		
 		home页面tabbar样式调整
 			加边框，修改active后颜色位置  /deep/
+			
+文章频道列表
+	1：弹出层实现（Popub组件）
+		挂载在body上面，样式设置在home-container上无效。要么设置全局，要么行内样式
+		v-model绑定是否显示 closeable关闭按钮

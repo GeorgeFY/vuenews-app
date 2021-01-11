@@ -22,6 +22,15 @@
       </van-tab>
     </van-tabs>
     <!-- 文章列表 结束-->
+    <van-popup
+      v-model="isChannelEditShow"
+      position="bottom"
+      class="channel-edit-popup"
+      closeable
+      close-icon-position="top-left"
+      get-container="body"
+      style="height: 100%"
+    />
   </div>
 </template>
 
@@ -37,7 +46,8 @@ export default {
   data () {
     return {
       active: 0,
-      channels: []
+      channels: [],
+      isChannelEditShow: false
     }
   },
   computed: {},
