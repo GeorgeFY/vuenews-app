@@ -463,3 +463,21 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 	
 	编辑频道，点击后出现删除图标
 	bool值来控制删除图标是否显示  点击后，文字会往下压。把margin-top设置为0
+	
+	实现删除频道和进去对应页面功能
+	
+	
+	点击切换进入对应页面
+	子传父事件，一个事件为关闭弹出页面，一个事件为跳转到对应页面
+	this.$emit('update-active', index)  把索引传过去
+    this.$emit('close')
+	在父组件中监听这两个事件
+	
+	<channel-edit :user-channels='channels'
+      @close="isChannelEditShow = false"
+      @update-active="onUpdatActive"
+      ></channel-edit>
+	  
+	  onUpdatActive (index) {
+      this.active = index
+    }

@@ -70,7 +70,6 @@ export default {
           arr.push(this.allChannels[i])
         }
       }
-      console.log(arr, '123')
       return arr
     }
   },
@@ -101,7 +100,8 @@ export default {
       this.userChannels.splice(index, 1)
     },
     switchChannel (index) {
-      console.log(1)
+      this.$emit('update-active', index)
+      this.$emit('close')
     }
   }
 }

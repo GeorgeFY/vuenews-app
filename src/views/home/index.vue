@@ -43,7 +43,10 @@
       get-container="body"
       style="height: 100%"
     >
-      <channel-edit :user-channels='channels'></channel-edit>
+      <channel-edit :user-channels='channels'
+      @close="isChannelEditShow = false"
+      @update-active="onUpdatActive"
+      ></channel-edit>
     </van-popup>
   </div>
 </template>
@@ -76,6 +79,9 @@ export default {
     async loadChannels () {
       const { data } = await getUserChannels()
       this.channels = data.data.channels
+    },
+    onUpdatActive (index) {
+      this.active = index
     }
   }
 }
