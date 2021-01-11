@@ -14,38 +14,73 @@
     <van-grid :gutter="10">
       <van-grid-item
         class='grid-item'
-        v-for="value in 8"
-        :key="value"
-        text="文字"
+        v-for="(channel,index) in userChannels"
+        :key="index"
+        :text="channel.name"
       ></van-grid-item>
     </van-grid>
     <van-cell :border="false">
       <div slot='title' class="channel-title">频道推荐</div>
     </van-cell>
-    <van-grid :gutter="10">
+    <van-grid :gutter="6">
       <van-grid-item
         class='grid-item'
-        v-for="value in 8"
-        :key="value"
-        text="文字"
+        v-for="(channel,index) in recommendChannels"
+        :key="index"
+        :text="channel.name"
       ></van-grid-item>
     </van-grid>
   </div>
 </template>
 
 <script>
+import { getAllChannels } from '@/api/channel'
 export default {
   name: 'ChannelEdit',
   components: {},
-  props: {},
-  data () {
-    return {}
+  props: {
+    userChannels: {
+      type: Array,
+      require: true
+    }
   },
-  computed: {},
+  data () {
+    return {
+      allChannels: []
+    }
+  },
+  computed: {
+    // 推荐频道
+    recommendChannels () {
+      const arr = []
+      for (let i = 0; i < this.allChannels.length; i++) {
+        for (let j = 1; j < this.userChannels.length; j++) {
+          var flag = false
+          if (this.allChannels[i].id === this.userChannels[j].id) {
+            flag = true
+            break
+          }
+        }
+        if (!flag) {
+          arr.push(this.allChannels[i])
+        }
+      }
+      console.log(arr, '123')
+      return arr
+    }
+  },
   watch: {},
-  created () {},
+  created () {
+    this.loadAllChannels()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    async loadAllChannels () {
+      // 获取所以频道
+      const { data } = await getAllChannels()
+      this.allChannels = data.data.channels
+    }
+  }
 }
 </script>
 
