@@ -45,6 +45,7 @@
     >
       <channel-edit :user-channels='channels'
       @close="isChannelEditShow = false"
+      :active="active"
       @update-active="onUpdatActive"
       ></channel-edit>
     </van-popup>

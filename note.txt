@@ -481,3 +481,5 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 	  onUpdatActive (index) {
       this.active = index
     }
+	
+	在频道页面中也高亮显示首页被选中的频道
