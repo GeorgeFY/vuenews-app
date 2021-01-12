@@ -510,3 +510,10 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 	在search外层包裹from标签且 action 不为空，即可在 iOS /Android输入法中显示搜索按钮。
 	
 	联系建议，历史结果，搜索结果  封装为组件，方便维护
+	van-cell  list组件使用
+	
+	三个组件显示
+	默认显示搜索历史，搜索框有类容 显示联想建议。触发搜索功能显示搜索结果
+	
+	v-if  v-if-else  v-else判断显示拿一个组件  v-if需要放在最前面
+	搜索框获得焦点时候，要关闭显示结果  改成联想建议

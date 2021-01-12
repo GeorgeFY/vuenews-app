@@ -8,18 +8,19 @@
         placeholder="请输入搜索关键词"
         @search="onSearch"
         @cancel="$router.back()"
+        @focus="isResultShow = false"
       />
     </form>
     <!-- 搜索栏 结束-->
+    <!-- 搜索结果 开始-->
+    <search-result v-if="isResultShow"></search-result>
+    <!-- 搜索结束 结束-->
     <!-- 联系建议 开始-->
-    <search-suggestion></search-suggestion>
+    <search-suggestion v-else-if="searchText"></search-suggestion>
     <!-- 联系建议 结束-->
     <!-- 历史记录 开始-->
-    <search-history></search-history>
+    <search-history v-else ></search-history>
     <!-- 历史记录 结束-->
-    <!-- 搜索结果 开始-->
-    <search-result></search-result>
-    <!-- 搜索结束 结束-->
   </div>
 </template>
 
@@ -37,7 +38,8 @@ export default {
   props: {},
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      isResultShow: false // 控制搜索结果显示
     }
   },
   computed: {},
@@ -49,6 +51,7 @@ export default {
   methods: {
     onSearch () {
       console.log('onSearch')
+      this.isResultShow = true
     }
   }
 }
