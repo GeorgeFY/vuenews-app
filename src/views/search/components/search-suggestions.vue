@@ -2,10 +2,11 @@
   <div class="search-suggestion">
     <van-cell
       icon="search"
-      :title="str"
       v-for="(str,index) in suggestions"
       :key="index"
-    ></van-cell>
+    >
+      <div slot="title" v-html="highlight(str)"></div>
+    </van-cell>
   </div>
 </template>
 
@@ -54,6 +55,13 @@ export default {
   mounted () {
   },
   methods: {
+    highlight (str) {
+      // RegExp 正则表达式构造函数 参数1 字符串 参数2 匹配模式 返回值 正则对象
+      return str.replace(
+        new RegExp(this.searchText, 'gi'),
+        `<span style="color: red">${this.searchText}</span>`
+      )
+    }
   }
 }
 </script>

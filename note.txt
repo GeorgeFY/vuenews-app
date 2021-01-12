@@ -531,3 +531,5 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		
 		防抖函数  优化联想数据请求
 		第三方包引入
+	联想结果 高亮显示
+	v-html  正则表达式忽略大小写
