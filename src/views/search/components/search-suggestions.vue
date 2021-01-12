@@ -15,13 +15,26 @@
 export default {
   name: 'SearchSuggestion',
   components: {},
-  props: {},
+  props: {
+    searchText: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    // 属性名，需要被监视的数据
+    searchText: {
+      handler () {
+        console.log('hello')
+      },
+      immediate: true
+    }
+  },
   created () {
   },
   mounted () {

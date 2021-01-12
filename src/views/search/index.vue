@@ -16,7 +16,10 @@
     <search-result v-if="isResultShow"></search-result>
     <!-- 搜索结束 结束-->
     <!-- 联系建议 开始-->
-    <search-suggestion v-else-if="searchText"></search-suggestion>
+    <search-suggestion
+     v-else-if="searchText"
+     :searchText="searchText"
+     ></search-suggestion>
     <!-- 联系建议 结束-->
     <!-- 历史记录 开始-->
     <search-history v-else ></search-history>
