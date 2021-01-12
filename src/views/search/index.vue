@@ -13,7 +13,10 @@
     </form>
     <!-- 搜索栏 结束-->
     <!-- 搜索结果 开始-->
-    <search-result v-if="isResultShow"></search-result>
+    <search-result
+     v-if="isResultShow"
+     :searchText="searchText"
+     ></search-result>
     <!-- 搜索结束 结束-->
     <!-- 联系建议 开始-->
     <search-suggestion
