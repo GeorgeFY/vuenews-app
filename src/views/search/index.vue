@@ -83,15 +83,15 @@ export default {
     },
     async laodSearchHistory () {
       let lacalHistory = getItem('search-historys') || []
-      // console.log(lacalHistory)本地存储里面数据
+      console.log(lacalHistory, '本地存储里面数据')
       if (this.user) {
         const { data } = await getHistorySearch()
-        // console.log(data.data.keywords) 线上存储数据
+        console.log(data.data.keywords, '线上存储数据')
         lacalHistory = [...new Set([
           ...lacalHistory,
           ...data.data.keywords
         ])]
-        // console.log(lacalHistory) 合并后数据
+        console.log(lacalHistory, '合并后数据')
       }
       this.searchHistorys = lacalHistory
     }
