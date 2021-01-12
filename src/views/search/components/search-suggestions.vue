@@ -14,7 +14,7 @@ import { getSearchSuggestions } from '@/api/search'
 // lodash 支持按需加载，有利于打包结果优化
 import { debounce } from 'lodash'
 import { Toast } from 'vant'
-import bus from '../bus.js'
+// import bus from '../bus.js'
 export default {
   name: 'SearchSuggestion',
   components: {},
@@ -43,7 +43,6 @@ export default {
         // console.log(data)
         if (data.data.options.length === 0) {
           Toast.fail('没有对应数据,请从新查找')
-          bus.$emit('clearInput')
         }
         this.suggestions = data.data.options
       }, 1000),

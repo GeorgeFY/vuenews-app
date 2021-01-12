@@ -9,7 +9,6 @@
         @search="onSearch"
         @cancel="$router.back()"
         @focus="isResultShow = false"
-        @clearInput="clearInput"
       />
     </form>
     <!-- 搜索栏 结束-->
@@ -32,7 +31,7 @@
 import SearchHistory from './components/search-history'
 import SearchSuggestion from './components/search-suggestions'
 import SearchResult from './components/search-result'
-import bus from './bus.js'
+// import bus from './bus.js'
 export default {
   name: 'SearchIndex',
   components: {
@@ -52,17 +51,12 @@ export default {
   created () {
   },
   mounted () {
-    this.clearInput()
+    // this.clearInput()
   },
   methods: {
     onSearch () {
       console.log('onSearch')
       this.isResultShow = true
-    },
-    clearInput () {
-      bus.$on('clearInput', res => {
-        this.searchText = ''
-      })
     }
   }
 }
