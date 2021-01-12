@@ -6,7 +6,7 @@
         v-model="searchText"
         show-action
         placeholder="请输入搜索关键词"
-        @search="onSearch"
+        @search="onSearch(searchText)"
         @cancel="$router.back()"
         @focus="isResultShow = false"
       />
@@ -22,10 +22,13 @@
     <search-suggestion
      v-else-if="searchText"
      :searchText="searchText"
+     @search = "onSearch"
      ></search-suggestion>
     <!-- 联系建议 结束-->
     <!-- 历史记录 开始-->
-    <search-history v-else ></search-history>
+    <search-history v-else
+      :searchHistorys="searchHistorys"
+    ></search-history>
     <!-- 历史记录 结束-->
   </div>
 </template>
@@ -46,7 +49,8 @@ export default {
   data () {
     return {
       searchText: '',
-      isResultShow: false // 控制搜索结果显示
+      isResultShow: false, // 控制搜索结果显示
+      searchHistorys: [] // 搜索历史数据
     }
   },
   computed: {},
@@ -57,8 +61,17 @@ export default {
     // this.clearInput()
   },
   methods: {
-    onSearch () {
-      console.log('onSearch')
+    onSearch (searchText) {
+      // console.log('onSearch')
+      // 如果是搜索建议点击过来的，调用onSearch方法 是子传父，参数有子组件传递过来
+      // 把传递过来的参数(点击的联想建议)替换为输入框里面的内容
+      this.searchText = searchText
+      // 先判断历史数据里面是否有，有 先删除
+      const index = this.searchHistorys.indexOf(searchText)
+      if (index !== -1) {
+        this.searchHistorys.splice(index, 1)
+      }
+      this.searchHistorys.unshift(searchText)
       this.isResultShow = true
     }
   }

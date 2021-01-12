@@ -4,6 +4,7 @@
       icon="search"
       v-for="(str,index) in suggestions"
       :key="index"
+      @click="onSearch(str)"
     >
       <div slot="title" v-html="highlight(str)"></div>
     </van-cell>
@@ -61,6 +62,9 @@ export default {
         new RegExp(this.searchText, 'gi'),
         `<span style="color: red">${this.searchText}</span>`
       )
+    },
+    onSearch (str) {
+      this.$emit('search', str)
     }
   }
 }
