@@ -37,6 +37,9 @@
 import SearchHistory from './components/search-history'
 import SearchSuggestion from './components/search-suggestions'
 import SearchResult from './components/search-result'
+import { setItem, getItem } from '@/utils/storage'
+import { getHistorySearch } from '@/api/search'
+import { mapState } from 'vuex'
 // import bus from './bus.js'
 export default {
   name: 'SearchIndex',
@@ -50,12 +53,15 @@ export default {
     return {
       searchText: '',
       isResultShow: false, // 控制搜索结果显示
-      searchHistorys: [] // 搜索历史数据
+      searchHistorys: getItem('search-historys') || [] // 搜索历史数据
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user'])
+  },
   watch: {},
   created () {
+    this.laodSearchHistory()
   },
   mounted () {
     // this.clearInput()
@@ -72,7 +78,22 @@ export default {
         this.searchHistorys.splice(index, 1)
       }
       this.searchHistorys.unshift(searchText)
+      setItem('search-historys', this.searchHistorys)
       this.isResultShow = true
+    },
+    async laodSearchHistory () {
+      let lacalHistory = getItem('search-historys') || []
+      // console.log(lacalHistory)本地存储里面数据
+      if (this.user) {
+        const { data } = await getHistorySearch()
+        // console.log(data.data.keywords) 线上存储数据
+        lacalHistory = [...new Set([
+          ...lacalHistory,
+          ...data.data.keywords
+        ])]
+        // console.log(lacalHistory) 合并后数据
+      }
+      this.searchHistorys = lacalHistory
     }
   }
 }
