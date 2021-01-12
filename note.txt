@@ -499,3 +499,14 @@ http://ttapi.research.itcast.cn/app/v1_0/user
  home页面search  btn点击后路由跳转 使用vant 中btn的 to 属性
  
 	首页页面布局
+	搜索栏
+	<van-search 
+		v-model="value"
+		disabled placeholder="请输入搜索关键词"
+		show-action
+		@search="onSearch"
+		@cancel="onCancel"
+	/>
+	在search外层包裹from标签且 action 不为空，即可在 iOS /Android输入法中显示搜索按钮。
+	
+	联系建议，历史结果，搜索结果  封装为组件，方便维护

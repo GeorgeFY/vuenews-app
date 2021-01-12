@@ -12,18 +12,28 @@
     </form>
     <!-- 搜索栏 结束-->
     <!-- 联系建议 开始-->
+    <search-suggestion></search-suggestion>
     <!-- 联系建议 结束-->
     <!-- 历史记录 开始-->
+    <search-history></search-history>
     <!-- 历史记录 结束-->
     <!-- 搜索结果 开始-->
+    <search-result></search-result>
     <!-- 搜索结束 结束-->
   </div>
 </template>
 
 <script>
+import SearchHistory from './components/search-history'
+import SearchSuggestion from './components/search-suggestions'
+import SearchResult from './components/search-result'
 export default {
   name: 'SearchIndex',
-  components: {},
+  components: {
+    SearchHistory,
+    SearchSuggestion,
+    SearchResult
+  },
   props: {},
   data () {
     return {
