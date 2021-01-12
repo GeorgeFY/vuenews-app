@@ -528,3 +528,6 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		watchd 完整写法。vue官方文档
 		
 		拿到数据，发请求，数据绑定模板响应
+		
+		防抖函数  优化联想数据请求
+		第三方包引入
