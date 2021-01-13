@@ -69,12 +69,14 @@
         color="#777"
       />
       <van-icon
-        color="#777"
-        name="star-o"
+        :color="article.is_collected ? 'yellow' : '#777'"
+        :name="article.is_collected ? 'star' : 'star-o'"
+        @click="onCollect"
       />
       <van-icon
-        color="#777"
-        name="good-job-o"
+        :color="(article.attitude === 1) ? 'hotpink' : '#777'"
+        :name="(article.attitude === 1) ? 'good-job' : 'good-job-o'"
+        @click="onLike"
       />
       <van-icon name="share" color="#777777"></van-icon>
     </div>
@@ -87,7 +89,7 @@
 // 1 this.$router.params.xxx
 // 2 props传参  在路由中配置props:true 可以直接this.articleId使用
 import './github-markdown.css'
-import { getArticleById } from '@/api/article'
+import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
 import { ImagePreview } from 'vant'
 import { addFollow, deleteFollow } from '@/api/user'
 export default {
@@ -164,6 +166,55 @@ export default {
       }
       // 关闭按钮的 loading 状态
       this.isFollowLoading = false
+    },
+    async onCollect () {
+      // 这里 loading 不仅仅是为了交互提示，更重要的是请求期间禁用背景点击功能，防止用户不断的操作界面发出请求
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '操作中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        // 如果已收藏，则取消收藏
+        if (this.article.is_collected) {
+          await deleteCollect(this.articleId)
+          this.$toast.success('取消收藏')
+        } else {
+          // 否则添加关注
+          await addCollect(this.articleId)
+          this.$toast.success('收藏成功')
+        }
+        // 更新视图
+        this.article.is_collected = !this.article.is_collected
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+    },
+    async onLike () {
+      // 这里 loading 不仅仅是为了交互提示，更重要的是请求期间禁用背景点击功能，防止用户不断的操作界面发出请求
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '操作中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        // 如果已收藏，则取消收藏
+        if (this.article.attitude === 1) {
+          await deleteLike(this.articleId)
+          this.article.attitude = -1
+          this.$toast.success('取消点赞')
+        } else {
+          // 否则添加关注
+          await addLike(this.articleId)
+          this.article.attitude = 1
+          this.$toast.success('点赞成功')
+        }
+        // 更新视图
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
     }
   }
 }
