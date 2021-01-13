@@ -11,9 +11,9 @@
     <div class="main-wrap">
 
       <!-- 加载完成-文章详情 -->
-      <div class="article-detail">
+      <div class="article-detail" v-if="isShowArticle">
         <!-- 文章标题 -->
-        <h1 class="article-title">这是文章标题</h1>
+        <h1 class="article-title">{{article.title}}</h1>
         <!-- /文章标题 -->
 
         <!-- 用户信息 -->
@@ -23,28 +23,32 @@
             slot="icon"
             round
             fit="cover"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="article.aut_photo"
           />
-          <div slot="title" class="user-name">作者名字</div>
-          <div slot="label" class="publish-date">14小时前</div>
+          <div slot="title" class="user-name">{{article.aut_name}}</div>
+          <div slot="label" class="publish-date">{{article.pubdate | relativeTime}}</div>
           <van-button
             class="follow-btn"
-            type="info"
-            color="#3296fa"
+            :type="article.is_followed ? 'info' : 'danger'"
             round
             size="small"
-            icon="plus"
-          >关注</van-button>
+            :icon="article.is_followed ? '' : 'plus'"
+          >{{article.is_followed ? '已关注' : '关注'}}</van-button>
         </van-cell>
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="markdown-body article-content">
-          这是文章内容
+        <div class="markdown-body article-content" v-html="article.content">
         </div>
         <van-divider>正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
+      <!-- 加载失败：404 -->
+      <div class="error-wrap" v-else>
+        <van-icon name="failure" />
+        <p class="text">该资源不存在或已删除！</p>
+      </div>
+      <!-- /加载失败：404 -->
     </div>
 
     <!-- 底部区域 -->
@@ -79,6 +83,7 @@
 // 1 this.$router.params.xxx
 // 2 props传参  在路由中配置props:true 可以直接this.articleId使用
 import './github-markdown.css'
+import { getArticleById } from '@/api/article'
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -89,13 +94,29 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      isShowArticle: true, // 默认有文章显示
+      article: {} // 文章数据
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.laodArticle()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    async laodArticle () {
+      try {
+        const { data } = await getArticleById(this.articleId)
+        console.log(data.data)
+        this.article = data.data
+      } catch (err) {
+        this.isShowArticle = false
+        console.log(err)
+      }
+    }
+  }
 }
 </script>
 
@@ -150,7 +171,23 @@ export default {
       }
     }
   }
-
+  .error-wrap {
+    padding: 200px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    .van-icon {
+      font-size: 122px;
+      color: #b4b4b4;
+    }
+    .text {
+      font-size: 30px;
+      color: #666666;
+      margin: 33px 0 46px;
+    }
+  }
   .loading-wrap {
     padding: 200px 32px;
     display: flex;
