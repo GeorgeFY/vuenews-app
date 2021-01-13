@@ -33,6 +33,8 @@
             round
             size="small"
             :icon="article.is_followed ? '' : 'plus'"
+            :loading="isFollowLoading"
+            @click="onFollow "
           >{{article.is_followed ? '已关注' : '关注'}}</van-button>
         </van-cell>
         <!-- /用户信息 -->
@@ -87,6 +89,7 @@
 import './github-markdown.css'
 import { getArticleById } from '@/api/article'
 import { ImagePreview } from 'vant'
+import { addFollow, deleteFollow } from '@/api/user'
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -99,7 +102,8 @@ export default {
   data () {
     return {
       isShowArticle: true, // 默认有文章显示
-      article: {} // 文章数据
+      article: {}, // 文章数据
+      isFollowLoading: false
     }
   },
   computed: {},
@@ -139,6 +143,27 @@ export default {
           })
         }
       })
+    },
+    async onFollow () {
+      // 开启按钮的 loading 状态
+      this.isFollowLoading = true
+      try {
+        // 如果已关注，则取消关注
+        const authorId = this.article.aut_id
+        if (this.article.is_followed) {
+          await deleteFollow(authorId)
+        } else {
+          // 否则添加关注
+          await addFollow(authorId)
+        }
+        // 更新视图
+        this.article.is_followed = !this.article.is_followed
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+      // 关闭按钮的 loading 状态
+      this.isFollowLoading = false
     }
   }
 }

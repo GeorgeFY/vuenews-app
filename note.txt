@@ -595,3 +595,6 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 	把上面操作在this.$nextTick里面完成
 	因为，数据改变影响视图更新。但是不是立即的，如果不在this.$nextTick里面完成，会获取不到imgs元素
 	this.$nextTick可以在数据改变后立即执行dom
+	
+	关注用户
+	接口
