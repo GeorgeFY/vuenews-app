@@ -38,7 +38,9 @@
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="markdown-body article-content" v-html="article.content">
+        <div class="markdown-body article-content"
+          v-html="article.content"
+          ref="article-content">
         </div>
         <van-divider>正文结束</van-divider>
       </div>
@@ -84,6 +86,7 @@
 // 2 props传参  在路由中配置props:true 可以直接this.articleId使用
 import './github-markdown.css'
 import { getArticleById } from '@/api/article'
+import { ImagePreview } from 'vant'
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -109,12 +112,33 @@ export default {
     async laodArticle () {
       try {
         const { data } = await getArticleById(this.articleId)
-        console.log(data.data)
+        // console.log(data.data)
         this.article = data.data
+        this.$nextTick(() => {
+          this.handelPreviewImage()
+        })
       } catch (err) {
         this.isShowArticle = false
         console.log(err)
       }
+    },
+    handelPreviewImage () {
+      // 获取文章内容DOM 得到所以img标签 循环img给其祖册点击事件 在里面调用ImagePreview
+      const articleContent = this.$refs['article-content']
+      // 数据改变 影响视图更新，但是不是立即的 可以使用$nextTick中
+      // console.log(articleContent)
+      const imgs = articleContent.querySelectorAll('img')
+      // console.log(imgs)
+      const imgPaths = []
+      imgs.forEach((img, index) => {
+        imgPaths.push(img.src)
+        img.onclick = function () {
+          ImagePreview({
+            images: imgPaths,
+            startPosition: index
+          })
+        }
+      })
     }
   }
 }

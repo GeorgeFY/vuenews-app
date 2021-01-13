@@ -568,3 +568,30 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 	
 	接口请求，数据绑定
 	id超过整数范围，转换id 在request工具函数里面处理
+	
+	文章详情里面图片处理
+	点击图片调用ImagePreview方法
+	1：先把图片找出来，2给图片注册点击事件
+	ref获取元素
+	const articleContent = this.$refs['article-content']
+	需要先给文字这个标签绑定ref="article-content"
+	在使用dom querySelectorAll获取所以imgs
+	const imgs = articleContent.querySelectorAll('img')
+	把imgs的地址存在一个数组里面
+	队imgs遍历  forEach
+	const imgPaths = []
+	imgs.forEach((img, index) => {
+        imgPaths.push(img.src)
+        
+      })
+	 遍历每一张图片都祖册点击事件  onclick
+	 img.onclick = function () {
+          ImagePreview({
+            images: imgPaths,
+            startPosition: index
+          })
+        }
+		
+	把上面操作在this.$nextTick里面完成
+	因为，数据改变影响视图更新。但是不是立即的，如果不在this.$nextTick里面完成，会获取不到imgs元素
+	this.$nextTick可以在数据改变后立即执行dom
