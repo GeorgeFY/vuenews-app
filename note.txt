@@ -562,3 +562,6 @@ http://ttapi.research.itcast.cn/app/v1_0/user
       required: true
     }
 	后续就可以通过this.articleId来判断是哪一篇文章了
+	
+	页面布局
+	导入github-markdown.css  github中下载  文章正文类容样式
