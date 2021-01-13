@@ -4,7 +4,9 @@
       title="搜索历史"
     >
     <div v-if="isDeleteShow">
-      <span>全部删除</span>
+      <span
+        @click="deleteAllSearch"
+      >全部删除</span>
       &nbsp;
       <span @click="isDeleteShow = false">完成</span>
     </div>
@@ -16,6 +18,7 @@
       :title="history"
       v-for="(history,index) in searchHistorys"
       :key="index"
+      @click="onDelete(history, index)"
     >
       <van-icon v-show="isDeleteShow" name="close" />
     </van-cell>
@@ -23,6 +26,7 @@
 </template>
 
 <script>
+import { setItem } from '@/utils/storage'
 export default {
   name: 'SearchHistory',
   components: {},
@@ -44,6 +48,22 @@ export default {
   mounted () {
   },
   methods: {
+    onDelete (history, index) {
+      if (this.isDeleteShow) {
+        // 如果是删除状态
+        this.searchHistorys.splice(index, 1)
+        // 数据持久化
+        // 1:修改本地存储数据
+        setItem('search-historys', this.searchHistorys)
+        // 2：修改线上数据(如果登入)
+      } else {
+        // 非删除状态，展示搜索结果
+        this.$emit('search', history)
+      }
+    },
+    deleteAllSearch () {
+      this.$emit('update-histories', [])
+    }
   }
 }
 </script>

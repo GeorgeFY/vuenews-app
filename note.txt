@@ -533,3 +533,32 @@ http://ttapi.research.itcast.cn/app/v1_0/user
 		第三方包引入
 	联想结果 高亮显示
 	v-html  正则表达式忽略大小写
+	
+	props数据不能重新赋值 =
+	想要修改，父组件自己修改
+	
+	
+	跨域 不同源策略  防止数据被盗用  cookie  localstroige  indexDB
+	解决办法  JSONP跨域  只支持get
+	croes  服务器完成，客户端不用管
+	服务器代理  相当于客户端向中间服务器发送请求（此时同源） 中间服务器在向接口服务器发送请求  返回数据给中间服务器，中间服务器把数据给客户端
+	
+	vue中怎么解决   vue.config.js中设置
+	
+文章详情模块
+	views下面创建article目录 index.vue  配置路由  动态路由
+	在这个页面需要获取文章ID，在文章列表项组件中，点击跳转到文章详情页面 
+	to属性
+	:to="{
+      name: 'article',
+      params: {
+        articleId: article.art_id
+      }
+    }"
+	在路由中配置props：true
+	在文章详情页面的props里面接受参数
+	articleId: {
+      type: [Number, String, Object],
+      required: true
+    }
+	后续就可以通过this.articleId来判断是哪一篇文章了

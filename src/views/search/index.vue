@@ -28,6 +28,8 @@
     <!-- 历史记录 开始-->
     <search-history v-else
       :searchHistorys="searchHistorys"
+      @search = "onSearch"
+      @update-histories = "updateHistories"
     ></search-history>
     <!-- 历史记录 结束-->
   </div>
@@ -38,7 +40,7 @@ import SearchHistory from './components/search-history'
 import SearchSuggestion from './components/search-suggestions'
 import SearchResult from './components/search-result'
 import { setItem, getItem } from '@/utils/storage'
-import { getHistorySearch } from '@/api/search'
+import { getHistorySearch, deleteHistorySearch } from '@/api/search'
 import { mapState } from 'vuex'
 // import bus from './bus.js'
 export default {
@@ -94,6 +96,15 @@ export default {
         console.log(lacalHistory, '合并后数据')
       }
       this.searchHistorys = lacalHistory
+    },
+    async updateHistories (args) {
+      // 删除所有历史记录  args是子组件传过来的参数
+      this.searchHistorys = args
+      // 数据持久化 1本地 2线上
+      setItem('search-historys', this.searchHistorys)
+      if (this.user) {
+        await deleteHistorySearch()
+      }
     }
   }
 }

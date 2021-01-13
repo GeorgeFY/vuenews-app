@@ -39,3 +39,14 @@ export const getHistorySearch = () => {
     url: '/app/v1_0/search/histories'
   })
 }
+
+/*
+  删除户搜索历史
+*/
+
+export const deleteHistorySearch = () => {
+  return request({
+    method: 'DELETE',
+    url: '/app/v1_0/search/histories'
+  })
+}
