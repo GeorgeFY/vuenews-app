@@ -45,6 +45,14 @@
           ref="article-content">
         </div>
         <van-divider>正文结束</van-divider>
+        <!-- 文章评论列表 -->
+        <comment-list
+         :source="articleId"
+         :list="commentList"
+         @update-total-count="totalCommentCount = $event"
+         @reply-click="onReplyClick"
+        />
+        <!-- /文章评论列表 -->
       </div>
       <!-- /加载完成-文章详情 -->
       <!-- 加载失败：404 -->
@@ -62,10 +70,11 @@
         type="default"
         round
         size="small"
+        @click="isPostShow = true"
       >写评论</van-button>
       <van-icon
         name="comment-o"
-        info="123"
+        :info="totalCommentCount"
         color="#777"
       />
       <van-icon
@@ -81,6 +90,23 @@
       <van-icon name="share" color="#777777"></van-icon>
     </div>
     <!-- /底部区域 -->
+    <!-- 发布评论-->
+    <!-- 不设置高度，自适应高度-->
+    <van-popup v-model="isPostShow" position="bottom">
+      <post-comment :target="articleId"
+        @post-success="onPostSuccess"
+      ></post-comment>
+    </van-popup>
+    <!-- /发布评论-->
+    <!-- 评论回复-->
+    <van-popup v-model="isReplyShow" position="bottom">
+      <comment-reply :comment="replyComment"
+        v-if="isReplyShow"
+        :article-id="articleId"
+        @close="isReplyShow = false"
+      ></comment-reply>
+    </van-popup>
+    <!-- /评论回复-->
   </div>
 </template>
 
@@ -92,9 +118,16 @@ import './github-markdown.css'
 import { getArticleById, addCollect, deleteCollect, addLike, deleteLike } from '@/api/article'
 import { ImagePreview } from 'vant'
 import { addFollow, deleteFollow } from '@/api/user'
+import CommentList from './components/comment-list'
+import PostComment from './components/post-comment'
+import CommentReply from './components/comment-reply'
 export default {
   name: 'ArticleIndex',
-  components: {},
+  components: {
+    CommentList,
+    PostComment,
+    CommentReply
+  },
   props: {
     articleId: {
       type: [Number, String, Object],
@@ -105,7 +138,12 @@ export default {
     return {
       isShowArticle: true, // 默认有文章显示
       article: {}, // 文章数据
-      isFollowLoading: false
+      isFollowLoading: false,
+      isPostShow: false, // 控制发布评论显示状态
+      commentList: [], //
+      totalCommentCount: 0, // 评论总数量
+      isReplyShow: false, // 控制回复的显示状态
+      replyComment: {}
     }
   },
   computed: {},
@@ -215,6 +253,22 @@ export default {
         console.log(err)
         this.$toast.fail('操作失败')
       }
+    },
+    onPostSuccess (comment) {
+      // console.log(data)
+      // 1:把发布成功的评论对象 放评论列表顶部
+      this.commentList.unshift(comment)
+      // 更新评论的总数量
+      this.totalCommentCount++
+      // 2：关闭弹出层
+      this.isPostShow = false
+    },
+    onReplyClick (comment) {
+      // console.log('onReplyClick', comment)
+      // 把comment存到当前组件
+      this.replyComment = comment
+      // 展示回复内容
+      this.isReplyShow = true
     }
   }
 }

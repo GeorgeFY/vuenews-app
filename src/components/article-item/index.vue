@@ -44,7 +44,8 @@
 <script>
 export default {
   name: 'ArticleItem',
-  components: {},
+  components: {
+  },
   props: {
     article: {
       type: Object,
